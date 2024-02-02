@@ -69,3 +69,8 @@ console.log(newArr);
 
 //   return acc;
 // }, []);
+
+// hello man
+
+const app = "hello";
+console.log(app);
