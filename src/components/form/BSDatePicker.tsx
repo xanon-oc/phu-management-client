@@ -1,20 +1,19 @@
-import { Form, Input } from "antd";
+import { DatePicker, Form } from "antd";
 import { Controller } from "react-hook-form";
 
-type TInputProps = {
-  type: string;
+type TDatePickerProps = {
   name: string;
   label?: string;
 };
 
-const BSInput = ({ type, name, label }: TInputProps) => {
+const BSDatePicker = ({ name, label }: TDatePickerProps) => {
   return (
     <div style={{ marginBottom: "15px" }}>
       <Controller
         name={name}
         render={({ field }) => (
           <Form.Item label={label}>
-            <Input size="large" {...field} type={type} id={name} />
+            <DatePicker {...field} size="large" style={{ width: "100%" }} />
           </Form.Item>
         )}
       />
@@ -22,4 +21,4 @@ const BSInput = ({ type, name, label }: TInputProps) => {
   );
 };
 
-export default BSInput;
+export default BSDatePicker;

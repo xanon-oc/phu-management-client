@@ -4,14 +4,17 @@ import { Controller } from "react-hook-form";
 type BSSelectProps = {
   label: string;
   name: string;
-  options: {
-    value: string;
-    label: string;
-    disabled?: boolean;
-  }[];
+  options:
+    | {
+        value: string;
+        label: string;
+        disabled?: boolean;
+      }[]
+    | undefined;
+  disabled?: boolean;
 };
 
-const BSSelect = ({ label, name, options }: BSSelectProps) => {
+const BSSelect = ({ label, name, options, disabled }: BSSelectProps) => {
   return (
     <Controller
       name={name}
@@ -23,6 +26,7 @@ const BSSelect = ({ label, name, options }: BSSelectProps) => {
             {...field}
             style={{ width: "100%" }}
             options={options}
+            disabled={disabled}
           />
           {error && <small style={{ color: "red" }}>{error.message}</small>}
         </Form.Item>
