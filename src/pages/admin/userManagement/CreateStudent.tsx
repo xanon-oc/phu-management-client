@@ -11,7 +11,6 @@ import {
   useGetAllSemestersQuery,
 } from "../../../redux/features/admin/academicManagement.api";
 import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.api";
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 //? This is Default values
 

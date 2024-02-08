@@ -12,15 +12,17 @@ type BSSelectProps = {
       }[]
     | undefined;
   disabled?: boolean;
+  mode?: "multiple" | undefined;
 };
 
-const BSSelect = ({ label, name, options, disabled }: BSSelectProps) => {
+const BSSelect = ({ label, name, options, disabled, mode }: BSSelectProps) => {
   return (
     <Controller
       name={name}
       render={({ field, fieldState: { error } }) => (
         <Form.Item label={label}>
           <Select
+            mode={mode}
             size="large"
             placeholder="Please select a option"
             {...field}

@@ -1,5 +1,10 @@
-import { TQueryParam, TResponseRedux } from "../../../types";
-import { TAcademicSemester } from "../../../types/academicManagement.types";
+import {
+  TAcademicFaculty,
+  TAcademicSemester,
+  TQueryParam,
+  TResponseRedux,
+} from "../../../types";
+
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
@@ -23,6 +28,31 @@ const academicManagementApi = baseApi.injectEndpoints({
         return { data: response.data, meta: response.meta };
       },
     }),
+    addAcademicSemester: builder.mutation({
+      query: (data) => ({
+        url: "/academic-semesters/create-academic-semester",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAcademicFaculties: builder.query({
+      query: () => {
+        return { url: "/academic-faculties", method: "GET" };
+      },
+      transformResponse: (response: TResponseRedux<TAcademicFaculty[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    addAcademicFaculty: builder.mutation({
+      query: (data) => ({
+        url: "/academic-faculties/create-academic-faculty",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAllAcademicDepartment: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -42,9 +72,9 @@ const academicManagementApi = baseApi.injectEndpoints({
         return { data: response.data, meta: response.meta };
       },
     }),
-    addAcademicSemester: builder.mutation({
+    addAcademicDepartment: builder.mutation({
       query: (data) => ({
-        url: "/academic-semesters/create-academic-semester",
+        url: "/academic-departments/create-academic-department",
         method: "POST",
         body: data,
       }),
@@ -54,6 +84,9 @@ const academicManagementApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllSemestersQuery,
-  useGetAllAcademicDepartmentQuery,
   useAddAcademicSemesterMutation,
+  useGetAllAcademicDepartmentQuery,
+  useAddAcademicFacultyMutation,
+  useGetAcademicFacultiesQuery,
+  useAddAcademicDepartmentMutation,
 } = academicManagementApi;
