@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from "antd";
 import { ReactNode } from "react";
 import {
@@ -40,6 +39,7 @@ const BSForm = ({
     onSubmit(data);
     methods.reset();
   };
+
   return (
     <FormProvider {...methods}>
       <Form layout="vertical" onFinish={methods.handleSubmit(submit)}>

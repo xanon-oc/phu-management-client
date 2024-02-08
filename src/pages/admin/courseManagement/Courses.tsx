@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagement.api";
 import BSForm from "../../../components/form/BSForm";
 import BSSelect from "../../../components/form/BSSelect";
+import { TResponse } from "../../../types";
+import { toast } from "sonner";
 
 const Courses = () => {
   const { data: courses, isFetching } = useGetAllCoursesQuery(undefined);
@@ -53,15 +55,23 @@ const AddFacultyModal = ({ facultyInfo }: { facultyInfo: any }) => {
     label: item.fullName,
   }));
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
+    const toastId = toast.loading("Creating...");
     const facultyData = {
       courseId: facultyInfo.key,
       data,
     };
 
-    console.log(facultyData);
-
-    addFaculties(facultyData);
+    try {
+      const res = (await addFaculties(facultyData)) as TResponse;
+      if (res.error) {
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success(res.data.message, { id: toastId });
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong", { id: toastId });
+    }
   };
 
   const showModal = () => {

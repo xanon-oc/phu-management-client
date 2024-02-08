@@ -30,7 +30,6 @@ const userManagementApi = baseApi.injectEndpoints({
     }),
     getAllFaculties: builder.query({
       query: (args) => {
-        console.log(args);
         const params = new URLSearchParams();
 
         if (args) {
