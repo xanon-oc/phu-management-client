@@ -1,5 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 
-export const verifyToken = (token: string) => {
-  return jwtDecode(token);
+interface JwtPayload {
+  role: string;
+}
+
+export const verifyToken = (token: string): JwtPayload => {
+  return jwtDecode(token) as JwtPayload;
 };

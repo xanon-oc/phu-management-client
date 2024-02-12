@@ -4,8 +4,9 @@ import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
 import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/features/auth/authSlice";
-import { TUser } from "../../types";
+import { TUser, useCurrentToken } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
+import { TSidebarItem } from "../../types";
 
 const { Sider } = Layout;
 
@@ -16,13 +17,17 @@ const userRole = {
 };
 
 const Sidebar = () => {
-  const { user } = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(useCurrentToken);
 
-  console.log(user);
+  let user;
 
-  let sidebarItems;
+  if (token) {
+    user = verifyToken(token);
+  }
 
-  switch (user!.role) {
+  let sidebarItems: TSidebarItem[] = [];
+
+  switch ((user as TUser)!.role) {
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
       break;
@@ -39,21 +44,20 @@ const Sidebar = () => {
 
   return (
     <Sider
-      style={{ height: "100vh", position: "sticky", top: "0", left: "0" }}
       breakpoint="lg"
       collapsedWidth="0"
+      style={{ height: "100vh", position: "sticky", top: "0", left: "0" }}
     >
       <div
         style={{
           color: "white",
-          textAlign: "center",
           height: "4rem",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <h1>PH UNIVERSITY</h1>
+        <h1>PH Uni</h1>
       </div>
       <Menu
         theme="dark"

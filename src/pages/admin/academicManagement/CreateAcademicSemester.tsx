@@ -9,8 +9,9 @@ import { academicSemesterSchema } from "../../../schemas/academicManagement.sche
 import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
 import { TResponse } from "../../../types/global";
-import BSForm from "../../../components/form/BSForm";
-import BSSelect from "../../../components/form/BSSelect";
+import PHForm from "../../../components/form/PHForm";
+import PHSelect from "../../../components/form/PHSelect";
+import { TAcademicSemester } from "../../../types";
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -36,12 +37,14 @@ const CreateAcademicSemester = () => {
 
     try {
       console.log(semesterData);
-      const res = (await addAcademicSemester(semesterData)) as TResponse;
+      const res = (await addAcademicSemester(
+        semesterData
+      )) as TResponse<TAcademicSemester> & { data: { message: string } };
       console.log(res);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success(res.data.message, { id: toastId });
+        toast.success(res?.data?.message, { id: toastId });
       }
     } catch (error: any) {
       toast.error("Something went wrong", { id: toastId });
@@ -51,21 +54,21 @@ const CreateAcademicSemester = () => {
   return (
     <Flex justify="center" align="center">
       <Col span={6}>
-        <BSForm
+        <PHForm
           onSubmit={onSubmit}
           resolver={zodResolver(academicSemesterSchema)}
         >
-          <BSSelect label="Name" name="name" options={semesterOptions} />
-          <BSSelect label="Year" name="year" options={yearOptions} />
-          <BSSelect
+          <PHSelect label="Name" name="name" options={semesterOptions} />
+          <PHSelect label="Year" name="year" options={yearOptions} />
+          <PHSelect
             label="Start Month"
             name="startMonth"
             options={monthOptions}
           />
-          <BSSelect label="End Month" name="endMonth" options={monthOptions} />
+          <PHSelect label="End Month" name="endMonth" options={monthOptions} />
 
           <Button htmlType="submit">Submit</Button>
-        </BSForm>
+        </PHForm>
       </Col>
     </Flex>
   );

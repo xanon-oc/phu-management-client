@@ -1,5 +1,5 @@
-import { Form, Input } from "antd";
-import { Controller } from "react-hook-form";
+import { Form, Input } from 'antd';
+import { Controller } from 'react-hook-form';
 
 type TInputProps = {
   type: string;
@@ -8,9 +8,9 @@ type TInputProps = {
   disabled?: boolean;
 };
 
-const BSInput = ({ type, name, label, disabled }: TInputProps) => {
+const PHInput = ({ type, name, label, disabled }: TInputProps) => {
   return (
-    <div style={{ marginBottom: "20px" }}>
+    <div style={{ marginBottom: '20px' }}>
       <Controller
         name={name}
         render={({ field }) => (
@@ -29,4 +29,4 @@ const BSInput = ({ type, name, label, disabled }: TInputProps) => {
   );
 };
 
-export default BSInput;
+export default PHInput;

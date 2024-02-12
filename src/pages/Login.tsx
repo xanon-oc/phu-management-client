@@ -6,56 +6,62 @@ import { TUser, setUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import BSForm from "../components/form/BSForm";
-import BSInput from "../components/form/BSInput";
+import PHForm from "../components/form/PHForm";
+import PHInput from "../components/form/PHInput";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const defaultValues = {
-    id: "A-0001",
-    password: "admin123",
+    // Admin
+    // userId: "A-0001",
+    // password: "admin123",
+    // Super Admin
+    // userId: "0001",
+    // password: "admin12345",
+    // Faculty
+    // userId: "F-0001",
+    // password: "faculty123",
+    // Student
+    userId: "2025010001",
+    password: "student123",
   };
 
-  // const { register, handleSubmit } = useForm({
-  //   defaultValues: {
-  //     id: "A-0001",
-  //     password: "admin123",
-  //   },
-  // });
-
-  const [login, { error }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
     const toastId = toast.loading("Logging in");
+
     try {
       const userInfo = {
-        id: data.id,
+        id: data.userId,
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
-      const user = verifyToken(res.data.accessToken) as TUser;
 
-      dispatch(setUser({ user: { user: user }, token: res.data.accessToken }));
-      toast.success(`Welcome to dashboard ${user.userId}`, {
-        id: toastId,
-        duration: 2000,
-      });
-      navigate(`/${user.role}/dashboard`);
-    } catch (error) {
-      toast.error(`Something went wrong - ${error}`, { id: toastId });
+      const user = verifyToken(res.data.accessToken) as TUser;
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      toast.success("Logged in", { id: toastId, duration: 2000 });
+
+      if (res.data.needsPasswordChange) {
+        navigate(`/change-password`);
+      } else {
+        navigate(`/${user.role}/dashboard`);
+      }
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };
 
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <BSForm onSubmit={onSubmit} defaultValues={defaultValues}>
-        <BSInput type="text" name="id" label="ID " />
-        <BSInput type="password" name="password" label="PASSWORD " />
+      <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
+        <PHInput type="text" name="userId" label="ID:" />
+        <PHInput type="text" name="password" label="Password" />
         <Button htmlType="submit">Login</Button>
-      </BSForm>
+      </PHForm>
     </Row>
   );
 };

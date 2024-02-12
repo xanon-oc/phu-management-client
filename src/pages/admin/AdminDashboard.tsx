@@ -1,9 +1,7 @@
-import { Outlet } from "react-router-dom";
-
 const AdminDashboard = () => {
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>This is the admin dashboard</h1>
+      <h1> This is AdminDashboard component </h1>
     </div>
   );
 };

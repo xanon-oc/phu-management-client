@@ -1,8 +1,27 @@
-import {
-  TAcademicDepartment,
-  TAcademicFaculty,
-  TAcademicSemester,
-} from "./academicManagement.types";
+import { TAcademicDepartment, TAcademicFaculty, TAcademicSemester } from '.';
+
+export interface TStudent {
+  _id: string;
+  id: string;
+  user: TUser;
+  name: TName;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  bloogGroup: string;
+  presentAddress: string;
+  permanentAddress: string;
+  guardian: TGuardian;
+  localGuardian: TLocalGuardian;
+  profileImg: string;
+  admissionSemester: TAcademicSemester;
+  isDeleted: boolean;
+  academicDepartment: TAcademicDepartment;
+  academicFaculty: TAcademicFaculty;
+  fullName: string;
+}
 
 export type TUser = {
   _id: string;
@@ -40,27 +59,4 @@ export type TLocalGuardian = {
   contactNo: string;
   address: string;
   _id: string;
-};
-
-export type TStudent = {
-  _id: string;
-  id: string;
-  user: TUser;
-  name: TName;
-  gender: string;
-  dateOfBirth: string;
-  email: string;
-  contactNo: string;
-  emergencyContactNo: string;
-  presentAddress: string;
-  permanentAddress: string;
-  guardian: TGuardian;
-  localGuardian: TLocalGuardian;
-  profileImg: string;
-  admissionSemester: TAcademicSemester;
-  isDeleted: boolean;
-  academicDepartment: TAcademicDepartment;
-  academicFaculty: TAcademicFaculty;
-  bloodGroup: string;
-  fullName: string;
 };

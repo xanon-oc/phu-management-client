@@ -1,4 +1,5 @@
 import {
+  TAcademicDepartment,
   TAcademicFaculty,
   TAcademicSemester,
   TQueryParam,
@@ -12,12 +13,13 @@ const academicManagementApi = baseApi.injectEndpoints({
     getAllSemesters: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
+
         if (args) {
           args.forEach((item: TQueryParam) => {
             params.append(item.name, item.value as string);
           });
         }
-        // params.append("name", args);
+
         return {
           url: "/academic-semesters",
           method: "GET",
@@ -25,7 +27,10 @@ const academicManagementApi = baseApi.injectEndpoints({
         };
       },
       transformResponse: (response: TResponseRedux<TAcademicSemester[]>) => {
-        return { data: response.data, meta: response.meta };
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
       },
     }),
     addAcademicSemester: builder.mutation({
@@ -53,23 +58,15 @@ const academicManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-    getAllAcademicDepartment: builder.query({
-      query: (args) => {
-        const params = new URLSearchParams();
-        if (args) {
-          args.forEach((item: TQueryParam) => {
-            params.append(item.name, item.value as string);
-          });
-        }
-        // params.append("name", args);
-        return {
-          url: "/academic-departments",
-          method: "GET",
-          params: params,
-        };
+    getAcademicDepartments: builder.query({
+      query: () => {
+        return { url: "/academic-departments", method: "GET" };
       },
-      transformResponse: (response: TResponseRedux<TAcademicSemester[]>) => {
-        return { data: response.data, meta: response.meta };
+      transformResponse: (response: TResponseRedux<TAcademicDepartment[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
       },
     }),
     addAcademicDepartment: builder.mutation({
@@ -85,8 +82,8 @@ const academicManagementApi = baseApi.injectEndpoints({
 export const {
   useGetAllSemestersQuery,
   useAddAcademicSemesterMutation,
-  useGetAllAcademicDepartmentQuery,
-  useAddAcademicFacultyMutation,
+  useGetAcademicDepartmentsQuery,
   useGetAcademicFacultiesQuery,
   useAddAcademicDepartmentMutation,
+  useAddAcademicFacultyMutation,
 } = academicManagementApi;

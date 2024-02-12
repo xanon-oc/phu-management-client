@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { TAcademicDepartment, TQueryParam } from "../../../types";
-import { useGetAllAcademicDepartmentQuery } from "../../../redux/features/admin/academicManagement.api";
+import { useGetAcademicDepartmentsQuery } from "../../../redux/features/admin/academicManagement.api";
 
 export type TTableData = Pick<
   TAcademicDepartment,
@@ -15,15 +15,15 @@ const AcademicDepartment = () => {
     data: departmentData,
     isLoading,
     isFetching,
-  } = useGetAllAcademicDepartmentQuery(params);
+  } = useGetAcademicDepartmentsQuery(params);
   console.log({ isLoading, isFetching });
-  const tableData = departmentData?.data?.map(
-    ({ _id, name, academicFaculty }) => ({
-      key: _id,
+  const tableData =
+    departmentData?.data?.map(({ _id, name, academicFaculty }, index) => ({
+      key: _id || `row-${index}`,
+      _id,
       academicFaculty,
       name,
-    })
-  );
+    })) || [];
 
   const columns: TableColumnsType<TTableData> = [
     {

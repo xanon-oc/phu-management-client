@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { useGetAcademicFacultiesQuery } from "../../../redux/features/admin/academicManagement.api";
-import { TAcademicFaculty } from "../../../types/academicManagement.types";
-import { TQueryParam } from "../../../types";
+
+import { TAcademicFaculty, TQueryParam } from "../../../types";
 
 export type TTableData = Pick<TAcademicFaculty, "_id" | "name">;
 const AcademicFaculty = () => {
@@ -15,10 +15,12 @@ const AcademicFaculty = () => {
     isFetching,
   } = useGetAcademicFacultiesQuery(params);
   console.log({ isLoading, isFetching });
-  const tableData = facultyData?.data?.map(({ _id, name }) => ({
-    key: _id,
-    name,
-  }));
+  const tableData =
+    facultyData?.data?.map(({ _id, name }, index) => ({
+      key: _id || `row-${index}`,
+      _id,
+      name,
+    })) || [];
 
   const columns: TableColumnsType<TTableData> = [
     {

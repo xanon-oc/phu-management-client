@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
-import { useState } from "react";
-import { TSemester } from "../../../types/courseManagement.type";
 import {
   useGetAllRegisteredSemestersQuery,
   useUpdateRegisteredSemesterMutation,
-} from "../../../redux/features/admin/courseManagement.api";
+} from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
-import { toast } from "sonner";
-import { TResponse } from "../../../types";
-
+import { TSemester } from "../../../types";
+import { useState } from "react";
 export type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
 const items = [
@@ -35,6 +32,8 @@ const RegisteredSemesters = () => {
 
   const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 
+  console.log(semesterId);
+
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, startDate, endDate, status }) => ({
       key: _id,
@@ -45,8 +44,7 @@ const RegisteredSemesters = () => {
     })
   );
 
-  const handleStatusUpdate = async (data: any) => {
-    const toastId = toast.loading("Creating...");
+  const handleStatusUpdate = (data: any) => {
     const updateData = {
       id: semesterId,
       data: {
@@ -54,16 +52,7 @@ const RegisteredSemesters = () => {
       },
     };
 
-    try {
-      const res = (await updateSemesterStatus(updateData)) as TResponse;
-      if (res.error) {
-        toast.error(res.error.data.message, { id: toastId });
-      } else {
-        toast.success(res.data.message, { id: toastId });
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    updateSemesterStatus(updateData);
   };
 
   const menuProps = {

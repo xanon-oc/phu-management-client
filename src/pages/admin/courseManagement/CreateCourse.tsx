@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import PHForm from "../../../components/form/PHForm";
+import { Button, Col, Flex } from "antd";
+import PHSelect from "../../../components/form/PHSelect";
+import { toast } from "sonner";
+import PHInput from "../../../components/form/PHInput";
 import {
   useAddCourseMutation,
   useGetAllCoursesQuery,
-} from "../../../redux/features/admin/courseManagement.api";
-import { toast } from "sonner";
+} from "../../../redux/features/admin/courseManagement";
 import { TResponse } from "../../../types";
-import { Button, Col, Flex } from "antd";
-import BSForm from "../../../components/form/BSForm";
-import BSInput from "../../../components/form/BSInput";
-import BSSelect from "../../../components/form/BSSelect";
 
 const CreateCourse = () => {
   const [createCourse] = useAddCourseMutation();
@@ -29,7 +29,7 @@ const CreateCourse = () => {
       credits: Number(data.credits),
       isDeleted: false,
       preRequisiteCourses: data.preRequisiteCourses
-        ? data.preRequisiteCourses?.map((item) => ({
+        ? data.preRequisiteCourses?.map((item: any) => ({
             course: item,
             isDeleted: false,
           }))
@@ -54,19 +54,19 @@ const CreateCourse = () => {
   return (
     <Flex justify="center" align="center">
       <Col span={6}>
-        <BSForm onSubmit={onSubmit}>
-          <BSInput type="text" name="title" label="Title" />
-          <BSInput type="text" name="prefix" label="Prefix" />
-          <BSInput type="text" name="code" label="Code" />
-          <BSInput type="text" name="credits" label="Credits" />
-          <BSSelect
+        <PHForm onSubmit={onSubmit}>
+          <PHInput type="text" name="title" label="Title" />
+          <PHInput type="text" name="prefix" label="Prefix" />
+          <PHInput type="text" name="code" label="Code" />
+          <PHInput type="text" name="credits" label="Credits" />
+          <PHSelect
             mode="multiple"
             options={preRequisiteCoursesOptions}
             name="preRequisiteCourses"
-            label="Pre Requisite Courses"
+            label="preRequisiteCourses"
           />
           <Button htmlType="submit">Submit</Button>
-        </BSForm>
+        </PHForm>
       </Col>
     </Flex>
   );

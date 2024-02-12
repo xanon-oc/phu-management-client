@@ -1,4 +1,9 @@
 const CreateAdmin = () => {
-  return <div>This is the create admin page</div>;
+  return (
+    <div>
+      <h1> This is CreateAdmin component </h1>
+    </div>
+  );
 };
+
 export default CreateAdmin;

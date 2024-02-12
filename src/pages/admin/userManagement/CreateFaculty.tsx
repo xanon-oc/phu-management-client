@@ -1,5 +1,9 @@
 const CreateFaculty = () => {
-  return <div>This is the faculty page</div>;
+  return (
+    <div>
+      <h1> This is CreateFaculty component </h1>
+    </div>
+  );
 };
 
 export default CreateFaculty;

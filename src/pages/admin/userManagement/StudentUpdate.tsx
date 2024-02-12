@@ -1,5 +1,9 @@
 const StudentUpdate = () => {
-  return <div>This is the student update page</div>;
+  return (
+    <div>
+      <h1> This is StudentUpdate component </h1>
+    </div>
+  );
 };
 
 export default StudentUpdate;

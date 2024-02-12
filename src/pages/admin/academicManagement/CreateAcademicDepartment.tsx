@@ -7,11 +7,13 @@ import {
 } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
 import { TResponse } from "../../../types/global";
-import BSForm from "../../../components/form/BSForm";
-import BSInput from "../../../components/form/BSInput";
-import { zodResolver } from "@hookform/resolvers/zod";
-import BSSelect from "../../../components/form/BSSelect";
+
 import { academicDepartmentSchema } from "../../../schemas/academicManagement.schema";
+import PHForm from "../../../components/form/PHForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import PHInput from "../../../components/form/PHInput";
+import PHSelect from "../../../components/form/PHSelect";
+import { TAcademicDepartment } from "../../../types";
 
 const CreateAcademicDepartment = () => {
   const { data: academicFaculties, isFetching } =
@@ -30,15 +32,15 @@ const CreateAcademicDepartment = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Creating...");
 
-    // const name = { name: data };
-
     try {
-      const res = (await addAcademicDepartment(data)) as TResponse;
-      console.log(res);
+      const res = (await addAcademicDepartment(
+        data
+      )) as TResponse<TAcademicDepartment> & { data: { message: string } };
+
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success(res.data.message, { id: toastId });
+        toast.success(res?.data?.message, { id: toastId });
       }
     } catch (error: any) {
       toast.error("Something went wrong", { id: toastId });
@@ -48,19 +50,19 @@ const CreateAcademicDepartment = () => {
   return (
     <Flex justify="center" align="center">
       <Col span={6}>
-        <BSForm
+        <PHForm
           resolver={zodResolver(academicDepartmentSchema)}
           onSubmit={onSubmit}
         >
-          <BSInput name="name" type="text" label="Department Name" />
-          <BSSelect
+          <PHInput name="name" type="text" label="Department Name" />
+          <PHSelect
             name="academicFaculty"
             options={academicFacultiesOptions}
             disabled={isFetching}
             label="Academic Faculty"
           />
           <Button htmlType="submit">Submit</Button>
-        </BSForm>
+        </PHForm>
       </Col>
     </Flex>
   );

@@ -1,15 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
-import { Button, Pagination, Space, Table } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
-import { TQueryParam, TStudent } from "../../../types";
-import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagement.api";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps,
+} from 'antd';
+import { useState } from 'react';
+import { TQueryParam, TStudent } from '../../../types';
+import { useGetAllStudentsQuery } from '../../../redux/features/admin/userManagement.api';
+import { Link } from 'react-router-dom';
 
 export type TTableData = Pick<
   TStudent,
-  "fullName" | "id" | "email" | "contactNo"
+  'fullName' | 'id' | 'email' | 'contactNo'
 >;
+
 const StudentData = () => {
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [page, setPage] = useState(1);
@@ -18,17 +24,20 @@ const StudentData = () => {
     isLoading,
     isFetching,
   } = useGetAllStudentsQuery([
-    { name: "page", value: page },
-    { name: "sort", value: "id" },
+    { name: 'page', value: page },
+    { name: 'sort', value: 'id' },
     ...params,
   ]);
+
   console.log({ isLoading, isFetching });
+
   const metaData = studentData?.meta;
+
   const tableData = studentData?.data?.map(
-    ({ _id, id, fullName, email, contactNo }) => ({
+    ({ _id, fullName, id, email, contactNo }) => ({
       key: _id,
+      fullName,
       id,
-      fullName: fullName,
       email,
       contactNo,
     })
@@ -36,29 +45,31 @@ const StudentData = () => {
 
   const columns: TableColumnsType<TTableData> = [
     {
-      title: "Full Name",
-      key: "fullName",
-      dataIndex: "fullName",
+      title: 'Name',
+      key: 'name',
+      dataIndex: 'fullName',
+    },
+
+    {
+      title: 'Roll No.',
+      key: 'id',
+      dataIndex: 'id',
     },
     {
-      title: "Roll No.",
-      key: "id",
-      dataIndex: "id",
+      title: 'Email',
+      key: 'email',
+      dataIndex: 'email',
     },
     {
-      title: "Email",
-      key: "email",
-      dataIndex: "email",
+      title: 'Contact No.',
+      key: 'contactNo',
+      dataIndex: 'contactNo',
     },
     {
-      title: "Contact No.",
-      key: "contactNo",
-      dataIndex: "contactNo",
-    },
-    {
-      title: "Action",
-      key: "action",
+      title: 'Action',
+      key: 'x',
       render: (item) => {
+        console.log(item);
         return (
           <Space>
             <Link to={`/admin/student-data/${item.key}`}>
@@ -69,36 +80,36 @@ const StudentData = () => {
           </Space>
         );
       },
-      width: "1%",
+      width: '1%',
     },
   ];
 
-  const onChange: TableProps<TTableData>["onChange"] = (
+  const onChange: TableProps<TTableData>['onChange'] = (
     _pagination,
     filters,
     _sorter,
     extra
   ) => {
-    console.log({ filters, extra });
-    if (extra.action === "filter") {
+    if (extra.action === 'filter') {
       const queryParams: TQueryParam[] = [];
+
       filters.name?.forEach((item) =>
-        queryParams.push({ name: "name", value: item })
+        queryParams.push({ name: 'name', value: item })
       );
+
       filters.year?.forEach((item) =>
-        queryParams.push({ name: "year", value: item })
+        queryParams.push({ name: 'year', value: item })
       );
+
       setParams(queryParams);
     }
   };
-  if (isLoading) {
-    return <p>Loading</p>;
-  }
+
   return (
     <>
       <Table
-        columns={columns}
         loading={isFetching}
+        columns={columns}
         dataSource={tableData}
         onChange={onChange}
         pagination={false}

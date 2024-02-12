@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import PHForm from "../../../components/form/PHForm";
 import { Button, Col, Flex } from "antd";
+import PHSelect from "../../../components/form/PHSelect";
+import { semesterStatusOptions } from "../../../constants/semester";
+
 import { toast } from "sonner";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
+import PHDatePicker from "../../../components/form/PHDatePicker";
+import PHInput from "../../../components/form/PHInput";
+import { useAddRegisteredSemesterMutation } from "../../../redux/features/admin/courseManagement";
 import { TResponse } from "../../../types";
-import { useAddRegisteredSemesterMutation } from "../../../redux/features/admin/courseManagement.api";
-import BSForm from "../../../components/form/BSForm";
-import BSSelect from "../../../components/form/BSSelect";
-import BSDatePicker from "../../../components/form/BSDatePicker";
-import BSInput from "../../../components/form/BSInput";
-import { semesterStatusOptions } from "../../../constants/semester";
 
 const SemesterRegistration = () => {
   const [addSemester] = useAddRegisteredSemesterMutation();
@@ -49,25 +50,25 @@ const SemesterRegistration = () => {
   return (
     <Flex justify="center" align="center">
       <Col span={6}>
-        <BSForm onSubmit={onSubmit}>
-          <BSSelect
+        <PHForm onSubmit={onSubmit}>
+          <PHSelect
             label="Academic Semester"
             name="academicSemester"
             options={academicSemesterOptions}
           />
 
-          <BSSelect
+          <PHSelect
             name="status"
             label="Status"
             options={semesterStatusOptions}
           />
-          <BSDatePicker name="startDate" label="Start Date" />
-          <BSDatePicker name="endDate" label="End Date" />
-          <BSInput type="text" name="minCredit" label="Min Credit" />
-          <BSInput type="text" name="maxCredit" label="Max Credit" />
+          <PHDatePicker name="startDate" label="Start Date" />
+          <PHDatePicker name="endDate" label="End Date" />
+          <PHInput type="text" name="minCredit" label="Min Credit" />
+          <PHInput type="text" name="maxCredit" label="Max Credit" />
 
           <Button htmlType="submit">Submit</Button>
-        </BSForm>
+        </PHForm>
       </Col>
     </Flex>
   );

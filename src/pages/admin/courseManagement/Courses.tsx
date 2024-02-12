@@ -3,13 +3,11 @@ import { Button, Modal, Table } from "antd";
 import {
   useAddFacultiesMutation,
   useGetAllCoursesQuery,
-} from "../../../redux/features/admin/courseManagement.api";
+} from "../../../redux/features/admin/courseManagement";
 import { useState } from "react";
+import PHForm from "../../../components/form/PHForm";
+import PHSelect from "../../../components/form/PHSelect";
 import { useGetAllFacultiesQuery } from "../../../redux/features/admin/userManagement.api";
-import BSForm from "../../../components/form/BSForm";
-import BSSelect from "../../../components/form/BSSelect";
-import { TResponse } from "../../../types";
-import { toast } from "sonner";
 
 const Courses = () => {
   const { data: courses, isFetching } = useGetAllCoursesQuery(undefined);
@@ -45,7 +43,7 @@ const Courses = () => {
   );
 };
 
-const AddFacultyModal = ({ facultyInfo }: { facultyInfo: any }) => {
+const AddFacultyModal = ({ facultyInfo }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: facultiesData } = useGetAllFacultiesQuery(undefined);
   const [addFaculties] = useAddFacultiesMutation();
@@ -55,23 +53,15 @@ const AddFacultyModal = ({ facultyInfo }: { facultyInfo: any }) => {
     label: item.fullName,
   }));
 
-  const handleSubmit = async (data: any) => {
-    const toastId = toast.loading("Creating...");
+  const handleSubmit = (data: any) => {
     const facultyData = {
       courseId: facultyInfo.key,
       data,
     };
 
-    try {
-      const res = (await addFaculties(facultyData)) as TResponse;
-      if (res.error) {
-        toast.error(res.error.data.message, { id: toastId });
-      } else {
-        toast.success(res.data.message, { id: toastId });
-      }
-    } catch (error: any) {
-      toast.error("Something went wrong", { id: toastId });
-    }
+    console.log(facultyData);
+
+    addFaculties(facultyData);
   };
 
   const showModal = () => {
@@ -91,15 +81,15 @@ const AddFacultyModal = ({ facultyInfo }: { facultyInfo: any }) => {
         onCancel={handleCancel}
         footer={null}
       >
-        <BSForm onSubmit={handleSubmit}>
-          <BSSelect
+        <PHForm onSubmit={handleSubmit}>
+          <PHSelect
             mode="multiple"
             options={facultiesOption}
             name="faculties"
             label="Faculty"
           />
           <Button htmlType="submit">Submit</Button>
-        </BSForm>
+        </PHForm>
       </Modal>
     </>
   );
